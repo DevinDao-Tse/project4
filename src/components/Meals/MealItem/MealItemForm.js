@@ -15,7 +15,7 @@ const MealItemForm = props => {
     const enteredAmount = amountInputRef.current.value;
     const enteredAmountInput = +enteredAmount
 
-    console.log(`asasc ` + enteredAmount)
+
 
     if (enteredAmount.trim().length === 0 ||
       enteredAmountInput < 1 ||

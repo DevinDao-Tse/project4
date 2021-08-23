@@ -12,15 +12,30 @@ const defaultCartState = {
 const cartReducer = (state, action) => {
 
   if (action.type === 'ADD_ITEM') {
-    const updatedItems = state.items.concat(action.item)
-    const updatedTotalAmount = state.totalAmount + (action.item.price * action.item.amount)
+    const updatedTotalAmount = state.totalAmount + action.item.price * action.item.amount
+
+    const existingCartItemIndex = state.items.findIndex(
+      item => item.id === action.item.id
+    )
+
+    const existingCartItem = state.items[existingCartItemIndex]
+    let updatedItems
+
+    if (existingCartItem) {
+      const updatedItem = {
+        ...existingCartItem,
+        amount: existingCartItem.amount + action.item.amount
+      }
+      updatedItems = [...state.items]
+      updatedItems[existingCartItemIndex] = updatedItem
+    } else {
+      updatedItems = state.items.concat(action.item)
+    }
+
     return {
       items: updatedItems,
       totalAmount: updatedTotalAmount
     }
-  }
-  else {
-
   }
 
   return defaultCartState
@@ -28,6 +43,9 @@ const cartReducer = (state, action) => {
 
 const CartProvider = props => {
 
+  //destructure
+  //state , dispatch -> function that updates state
+  //update/reducer function (outside of component), 2nd paramater is object
   const [cartState, dispatchCartAction] = useReducer(cartReducer, defaultCartState)
 
 
@@ -48,7 +66,7 @@ const CartProvider = props => {
 
   const cartContext = {
     items: cartState.items,
-    totalAmount: 0,
+    totalAmount: cartState.totalAmount,
     addItem: addItemToCartHandler,
     removeItem: removeItemFromCartHandler
   }
