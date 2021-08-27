@@ -14,6 +14,7 @@ const HeaderCartButton = (props) => {
   const btnClasses = `${classes.button} ${btnHighlight ? classes.bump : ''}`
 
   const { items } = cartCtx
+  //testing username change
 
   useEffect(() => {
     if (items === 0) return;
